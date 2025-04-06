@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use("/users", userRouter);
 
 const { PORT = 3001 } = process.env;
 
