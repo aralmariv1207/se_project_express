@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use("/", mainRouter);
 app.use("/users", userRouter);
 
 const { PORT = 3001 } = process.env;
@@ -18,7 +19,7 @@ mongoose
   })
   .catch(console.error);
 
-  app.use("/", mainRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
