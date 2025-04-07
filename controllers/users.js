@@ -18,6 +18,8 @@ const createUser = (req, res) => {
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       console.error(err);
+      console.log(err.name);
+      return res.status(500).send({ message: err.message });
     });
 };
 
