@@ -16,11 +16,29 @@ const createUser = (req, res) => {
 
   User.create({ name, avatar })
     .then((user) => res.status(201).send(user))
+
     .catch((err) => {
       console.error(err);
-      console.log(err.name);
+      if (err.name === "") {
+        return res.status(400).send({ message: err.message });
+      }
       return res.status(500).send({ message: err.message });
     });
 };
 
-module.exports = { getUsers, createUser };
+const getUser = (req, res) => {
+  const { userId } = req.params;
+  User.findById(userId)
+  .orFail()
+  .then((user) => res.status(200).send(user))
+  .catch((err) => {
+    console.error(err);
+    if (err.name === "DocumentNotFoundError") {
+      // ...
+    } else if (error.name === "CastError") {
+    }
+    return res.status(500).send("An error occured on the server");
+  });
+};
+
+module.exports = { getUsers, createUser, getUser };
