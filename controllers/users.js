@@ -11,6 +11,9 @@ const getUsers = (req, res) => {
     });
 };
 
+
+// POST /users
+
 const createUser = (req, res) => {
   const { name, avatar } = req.body;
 
@@ -19,7 +22,7 @@ const createUser = (req, res) => {
 
     .catch((err) => {
       console.error(err);
-      if (err.name === "") {
+      if (err.name === "ValidationError") {
         return res.status(400).send({ message: err.message });
       }
       return res.status(500).send({ message: err.message });
@@ -37,7 +40,7 @@ const getUser = (req, res) => {
       // ...
     } else if (error.name === "CastError") {
     }
-    return res.status(500).send("An error occured on the server");
+    return res.status(500).send({ message: "An error occured on the server" });
   });
 };
 
