@@ -2,12 +2,23 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
 const mainRouter = require("./routes/index");
+const clothingRouter = require("./routes/clothingitems");
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: "/* paste your user _id here */",
+  };
+  next();
+});
+
 app.use("/users", userRouter);
+app.use("/items", clothingRouter);
+app.use("/", mainRouter);
 
 const { PORT = 3001 } = process.env;
 
@@ -17,8 +28,6 @@ mongoose
     console.log("Connected to DB");
   })
   .catch(console.error);
-
-app.use("/", mainRouter);
 
 // 404 middleware for unhandled routes
 app.use((req, res) => {
