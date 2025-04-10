@@ -20,7 +20,9 @@ const getItems = (req, res) => {
 
 const createItem = (req, res) => {
   const { name, imageUrl, weather } = req.body;
-  ClothingItem.create({ name, imageUrl, weather })
+  const owner = req.user._id;
+
+  ClothingItem.create({ name, imageUrl, weather, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       console.error(err);
@@ -53,4 +55,48 @@ const getItem = (req, res) => {
     });
 };
 
-module.exports = { getItems, createItem, getItem };
+const addLike = (req, res) => {
+  const { itemId } = req.params;
+
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
+  )
+    .then((item) => {
+      if (!item) {
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
+      res.send(item);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid ID format" });
+      }
+      return res.status(SERVER_ERROR).send({ message: "Error updating likes" });
+    });
+};
+
+const removeLike = (req, res) => {
+  const { itemId } = req.params;
+
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
+    .then((item) => {
+      if (!item) {
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
+      res.send(item);
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid ID format" });
+      }
+      return res.status(SERVER_ERROR).send({ message: "Error updating likes" });
+    });
+};
+
+module.exports = { getItems, createItem, getItem, addLike, removeLike };
