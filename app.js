@@ -11,7 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "/* paste your user _id here */",
+    _id: "67f963d7b5dc3c9b1b7b804a",
+    name: "test",
+    avatar: "https://example.com/av.bmp",
+    __v: 0,
   };
   next();
 });
