@@ -90,7 +90,7 @@ const addLike = (req, res) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res.send(item);
+      return res.send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
@@ -112,7 +112,7 @@ const removeLike = (req, res) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res.send(item);
+      return res.send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
