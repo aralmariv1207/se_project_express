@@ -1,6 +1,6 @@
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors.js");
+const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
-const ClothingItem = require("../models/clothingItem.js");
+const ClothingItem = require("../models/clothingItem");
 
 // GET /items
 

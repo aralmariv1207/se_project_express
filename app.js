@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRouter = require("./routes/users.js");
-const mainRouter = require("./routes/index.js");
-const clothingRouter = require("./routes/clothingItems.js");
+const userRouter = require("./routes/users");
+const mainRouter = require("./routes/index");
+const clothingRouter = require("./routes/clothingItems");
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.use((req, res) => {
 });
 
 // Central error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err);
   const { statusCode = 500, message } = err;
 
