@@ -1,6 +1,6 @@
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
-const ClothingItem = require("../models/clothingitem");
+const ClothingItem = require("../models/clothingItem");
 
 // GET /items
 
@@ -46,7 +46,30 @@ const getItem = (req, res) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
-      } if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error occurred on the server" });
+    });
+};
+
+// DELETE /items/:itemId
+
+const deleteItem = (req, res) => {
+  const { itemId } = req.params;
+
+  ClothingItem.findByIdAndDelete(itemId)
+    .orFail()
+    .then((item) => res.status(200).send(item))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
+      if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
       return res
@@ -99,4 +122,11 @@ const removeLike = (req, res) => {
     });
 };
 
-module.exports = { getItems, createItem, getItem, addLike, removeLike };
+module.exports = {
+  getItems,
+  createItem,
+  getItem,
+  addLike,
+  removeLike,
+  deleteItem,
+};
