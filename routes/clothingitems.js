@@ -7,7 +7,7 @@ const {
   getItem,
   addLike,
   removeLike,
-} = require("../controllers/clothingitems");
+} = require("../controllers/clothingItems");
 
 // GET all clothing items
 router.get("/", getItems);

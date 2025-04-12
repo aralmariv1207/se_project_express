@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
 const mainRouter = require("./routes/index");
-const clothingRouter = require("./routes/clothingitems");
+const clothingRouter = require("./routes/clothingItems");
 
 const app = express();
 
