@@ -1,8 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRouter = require("./routes/users");
 const mainRouter = require("./routes/index");
-const clothingRouter = require("./routes/clothingItems");
+const { NOT_FOUND } = require("./utils/errors");
 
 const app = express();
 
