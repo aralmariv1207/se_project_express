@@ -12,15 +12,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   req.user = {
     _id: "67f963d7b5dc3c9b1b7b804a",
-    name: "test",
-    avatar: "https://example.com/av.bmp",
-    __v: 0,
   };
   next();
 });
 
-app.use("/users", userRouter);
-app.use("/items", clothingRouter);
 app.use("/", mainRouter);
 
 const { PORT = 3001 } = process.env;
@@ -34,7 +29,7 @@ mongoose
 
 // 404 middleware for unhandled routes
 app.use((req, res) => {
-  res.status(404).send({ message: "Requested resource not found" });
+  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
 });
 
 // Central error handling middleware
