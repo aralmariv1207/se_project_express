@@ -8,13 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "67f963d7b5dc3c9b1b7b804a",
-  };
-  next();
-});
-
 app.use("/", mainRouter);
 
 const { PORT = 3001 } = process.env;
@@ -32,7 +25,7 @@ app.use((req, res) => {
 });
 
 // Central error handling middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err);
   const { statusCode = 500, message } = err;
 
