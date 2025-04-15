@@ -1,17 +1,6 @@
-# WTWR (What to Wear?): Back End
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
-## Running the Project
-`npm run start` — to launch the server 
+# WTWR PROJECT SERIES
 
-`npm run dev` — to launch the server with the hot reload feature
-
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
-
-
-# WTWR Project Series
-
-## Project 12 - Introduction to Back-End: Node.js and Express.js: 
+## Project 12 - Introduction to Back-End: Node.js and Express.js:
 
 ### Overview:
 
@@ -21,18 +10,17 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 
 ### Intro:
 
-- The back-end portion of this project is focused on creating a server for the WTWR application. 
+- The back-end portion of this project is focused on creating a server for the WTWR application.
 
-- With it I gained a deeper understanding of how to work with databases, set up security and testing, and deployed web applications on a remote machine. 
+- With it I gained a deeper understanding of how to work with databases, set up security and testing, and deployed web applications on a remote machine.
 
 - The eventual goal is to create a server with an API and user authorization, for which this project served as a first step.
 
 - This project can be run with these prompts:
 
-- - `npm run start` — to launch the server 
+- - `npm run start` — to launch the server
 
 - - `npm run dev` — to launch the server with the hot reload feature
-
 
 ### Features:
 
@@ -47,8 +35,9 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 
 ### Links:
 
-- Link to the project on GH Pages: [[TBD](https://github.com/aralmariv1207/se_project_express.git)]
+- Link to the project on GH Pages: [(https://github.com/aralmariv1207/se_project_express.git)]
 
+---
 
 ## Project 13 - Back-End Authentication and Authorization:
 
@@ -58,19 +47,37 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 - Features
 - Links
 
-
 ### Intro:
 
-[TBD]
+This phase of the WTWR project focuses on implementing user authentication and authorization features. The key additions include:
+
+- User registration and login functionality with secure password handling
+- JWT (JSON Web Token) based authentication
+- Protected routes that require user authentication
+- User authorization to ensure users can only modify their own data
+- Enhanced error handling and input validation using regular expressions
+
+This implementation ensures secure user management while maintaining the RESTful architecture established in the previous sprint.
+
+- This project can be run with these prompts:
+
+- - `npm run start` — to launch the server
+
+- - `npm run dev` — to launch the server with the hot reload feature
 
 ### Features:
 
-- [TBD]
+- Server-Side Authentication and Authorization
+- Authentication Methods
+- Authorization Methods
+- JS Web Tokens
+- JS Regular Expressions (Regexs)
 
 ### Links:
 
-- Link to the project on GH Pages: [TBD]
+- Link to the project on GH Pages: [(https://github.com/aralmariv1207/se_project_express.git)]
 
+---
 
 ## Project 14 - Front-End Authorization:
 
@@ -80,7 +87,6 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 - Features
 - Links
 
-
 ### Intro:
 
 [TBD]
@@ -93,6 +99,7 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 
 - Link to the project on GH Pages: [TBD]
 
+---
 
 ## Project 15 - Automated Testing and Cloud Deployment:
 
@@ -102,7 +109,6 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 - Features
 - Links
 
-
 ### Intro:
 
 [TBD]
@@ -115,4 +121,4 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 
 - Link to the project on GH Pages: [TBD]
 
-
+---
