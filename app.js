@@ -1,14 +1,39 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mainRouter = require("./routes/index");
+const cors = require("cors");
+
+// Importing routers
+const itemsRouter = require("./routes/clothingItems");
+const usersRouter = require("./routes/users");
+
+// Importing middlewares and controllers
+const auth = require("./middlewares/auth");
+const { createUser, login } = require("./controllers/users");
 const { NOT_FOUND } = require("./utils/errors");
 
 const app = express();
 
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-app.use("/", mainRouter);
+// Public routes
+app.post("/signup", createUser);
+app.post("/signin", login);
+
+// Protected routes
+app.use("/users", usersRouter);
+app.use(
+  "/items",
+  (req, res, next) => {
+    if (req.method === "GET") {
+      return next();
+    }
+    return auth(req, res, next);
+  },
+  itemsRouter
+);
 
 const { PORT = 3001 } = process.env;
 
@@ -32,6 +57,7 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send({
     message: statusCode === 500 ? "An error occurred on the server" : message,
   });
+  next(err);
 });
 
 app.listen(PORT, () => {

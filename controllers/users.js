@@ -1,8 +1,8 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
 const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 
 // GET /users
@@ -26,11 +26,7 @@ const createUser = (req, res) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
-    .then((user) => {
-      const { password, ...userWithoutPassword } = user.toObject();
-      return userWithoutPassword;
-    })
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(201).send(user)) // password will be hidden automatically due to select: false
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -45,9 +41,9 @@ const createUser = (req, res) => {
     });
 };
 
-// GET /users/:userId
+// GET /users/me
 
-const getUser = (req, res) => {
+const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => res.status(200).send(user))
@@ -81,6 +77,8 @@ const login = (req, res) => {
     });
 };
 
+// PATCH /users/me — update profile
+
 const updateUser = (req, res) => {
   const { name, avatar } = req.body;
 
@@ -108,7 +106,7 @@ const updateUser = (req, res) => {
 module.exports = {
   getUsers,
   createUser,
-  getUser,
+  getCurrentUser,
   login,
   updateUser,
 };
