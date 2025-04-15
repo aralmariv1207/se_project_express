@@ -5,6 +5,7 @@ const {
   NOT_FOUND,
   SERVER_ERROR,
   UNAUTHORIZED,
+  CONFLICT,
 } = require("../utils/errors");
 
 const User = require("../models/user");
@@ -18,9 +19,9 @@ const createUser = (req, res) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
-    .then((user) => res.status(201).send(user)) // password will be hidden automatically due to select: false
     .then((user) => {
-      const { password, ...userWithoutPassword } = user.toObject();
+      const { password: hashedPassword, ...userWithoutPassword } =
+        user.toObject();
       res.status(201).send(userWithoutPassword);
     })
     .catch((err) => {
@@ -42,7 +43,10 @@ const createUser = (req, res) => {
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      const { password, ...userWithoutPassword } = user.toObject();
+      res.status(200).send(userWithoutPassword);
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -53,7 +57,7 @@ const getCurrentUser = (req, res) => {
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: "An error occured on the server" });
+        .send({ message: "An error occurred on the server" });
     });
 };
 
@@ -61,7 +65,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({
+    return res.status(BAD_REQUEST).send({
       message: "The password and email fields are required",
     });
   }
@@ -76,10 +80,13 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.message === "Incorrect email or password") {
-        res.status(401).send({ message: "Incorrect email or password" });
-      } else {
-        res.status(500).send({ message: "An error occurred on the server" });
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
       }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error occurred on the server" });
     });
 };
 
@@ -94,7 +101,10 @@ const updateUser = (req, res) => {
     { new: true, runValidators: true }
   )
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => {
+      const { password, ...userWithoutPassword } = user.toObject();
+      res.status(200).send(userWithoutPassword);
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
