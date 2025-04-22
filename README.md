@@ -89,15 +89,18 @@ This implementation ensures secure user management while maintaining the RESTful
 
 ### Intro:
 
-[TBD]
+- Project 14 of the WTWR Series was my first ever full-stack one in that it taught me to connect both the front-end and the back-end aspects of it.
+
+- Also, it introduced me to several cybersecurity concepts as they pertain to Web Application Security.
 
 ### Features:
 
-- [TBD]
+- Fron-End Authentication with React
+- Web Application Security
 
 ### Links:
 
-- Link to the project on GH Pages: [TBD]
+- Link to the project on GH Pages: [(https://github.com/aralmariv1207/se_project_express.git)]
 
 ---
 
