@@ -102,7 +102,7 @@ This implementation ensures secure user management while maintaining the RESTful
 
 - Link to the project design on Figma: [(https://www.figma.com/file/bfVOvqlLmoKZ5lpro8WWBe/Sprint-14_-WTWR?t=3hvVWRz9LUFsxyNn-6)]
 
-- Link to the project on GH Pages: 
+- Link to the project on GH Pages:
 
 - - Front-End: [(https://github.com/aralmariv1207/se_project_react.git)]
 
