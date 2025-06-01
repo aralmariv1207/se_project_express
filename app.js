@@ -35,6 +35,11 @@ app.use(
   itemsRouter
 );
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  return res.status(500).send({ message: "An error occurred on the server" });
+});
+
 const { PORT = 3001 } = process.env;
 
 mongoose
