@@ -48,7 +48,7 @@ app.use((err, req, res, next) => {
     return res.status(500).send({ message: "An error occurred on the server" });
   }
   // If headers were already sent, delegate to Express default error handler
-  next(err);
+  return next(err);
 });
 
 const { PORT = 3001 } = process.env;
@@ -63,17 +63,6 @@ mongoose
 // 404 middleware for unhandled routes
 app.use((req, res) => {
   res.status(NOT_FOUND).send({ message: "Requested resource not found" });
-});
-
-// Central error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err);
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({
-    message: statusCode === 500 ? "An error occurred on the server" : message,
-  });
-  next(err);
 });
 
 app.listen(PORT, () => {
