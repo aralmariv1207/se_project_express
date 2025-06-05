@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const { validateSignup, validateLogin } = require("./middlewares/validations");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 // Importing routers
 const itemsRouter = require("./routes/clothingItems");
@@ -19,6 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(requestLogger);
 
 // Public routes
 app.post("/signup", validateSignup, createUser);
@@ -37,6 +39,8 @@ app.use(
 
   itemsRouter
 );
+
+app.use(errorLogger);
 
 app.use((err, req, res, next) => {
   console.error(err);
