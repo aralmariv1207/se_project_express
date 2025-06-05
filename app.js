@@ -2,8 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const { errors } = require("celebrate");
+
 const { validateSignup, validateLogin } = require("./middlewares/validations");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+
+const { errorHandler } = require("./middlewares/errorHandler");
 
 // Importing routers
 const itemsRouter = require("./routes/clothingItems");
@@ -40,23 +44,14 @@ app.use(
   itemsRouter
 );
 
-app.use(errorLogger);
-
-app.use((err, req, res, next) => {
-  console.error(err);
-
-  // Access request information
-  console.log("Error occurred on:", req.method, req.url);
-  console.log("Request body:", req.body);
-  console.log("Query parameters:", req.query);
-
-  // If response hasn't been sent yet, handle the error
-  if (!res.headersSent) {
-    return res.status(500).send({ message: "An error occurred on the server" });
-  }
-  // If headers were already sent, delegate to Express default error handler
-  return next(err);
+// 404 middleware for unhandled routes
+app.use((req, res) => {
+  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
 });
+
+app.use(errorLogger);
+app.use(errors());
+app.use(errorHandler);
 
 const { PORT = 3001 } = process.env;
 
@@ -67,11 +62,8 @@ mongoose
   })
   .catch(console.error);
 
-// 404 middleware for unhandled routes
-app.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
-});
-
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
+
+module.exports = { app }; // Export app for testing purposes
