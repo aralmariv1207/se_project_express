@@ -26,6 +26,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(requestLogger);
 
+// Crash test route
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 // Public routes
 app.post("/signup", validateSignup, createUser);
 app.post("/signin", validateLogin, login);
