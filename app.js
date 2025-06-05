@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const { validateSignup, validateLogin } = require("./middlewares/validations");
+
 // Importing routers
 const itemsRouter = require("./routes/clothingItems");
 const usersRouter = require("./routes/users");
@@ -19,8 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Public routes
-app.post("/signup", createUser);
-app.post("/signin", login);
+app.post("/signup", validateSignup, createUser);
+app.post("/signin", validateLogin, login);
 
 // Protected routes
 app.use("/users", usersRouter);
@@ -32,6 +34,7 @@ app.use(
     }
     return auth(req, res, next);
   },
+
   itemsRouter
 );
 

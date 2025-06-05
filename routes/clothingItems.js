@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+const { validateItem } = require("../middlewares/validations");
+
 const {
   getItems,
   createItem,
@@ -19,7 +21,7 @@ router.get("/:itemId", getItem);
 router.delete("/:itemId", deleteItem);
 
 // POST - Create a new clothing item
-router.post("/", createItem);
+router.post("/", validateItem, createItem);
 router.put("/:itemId/likes", addLike);
 router.delete("/:itemId/likes", removeLike);
 
