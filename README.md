@@ -120,14 +120,28 @@ This implementation ensures secure user management while maintaining the RESTful
 
 ### Intro:
 
-[TBD]
+- Not only was Project 15 the final one of the WTWR Series, but it also expanded on the interplay between Backend and Frontend, as far as Full-Stack Software Engineering goes.
+
+- Moreover, it taught me about both Automated Testing and Advanced Middleware, with the latter being instrumental to understanding Cybersecurity.
+
+- Thanks to Project 15, I was introduced to the work of Cloud Deployment by way of Google Cloud.
+
+- I am confident that learning about Google Cloud will serve as a foundation to learning about AWS.
 
 ### Features:
 
-- [TBD]
+- Automated Testing
+- Advanced Middleware
+- Deploying and Hosting in the Cloud
 
 ### Links:
 
-- Link to the project on GH Pages: [TBD]
+- Links to the WTWR project on GH Pages:
 
----
+- - Front-End: [(https://github.com/aralmariv1207/se_project_react.git)]
+
+- - Back-End: [(https://github.com/aralmariv1207/se_project_express.git)]
+
+- Links to the API subdomain:
+
+- - API subdomain: [(api.wtwr.redthreadclothing.com)]
