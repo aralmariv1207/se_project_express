@@ -6,12 +6,16 @@ const errorHandler = (err, req, res, next) => {
   console.log("Request body:", req.body);
   console.log("Query parameters:", req.query);
 
-  // If response hasn't been sent yet, handle the error
-  if (!res.headersSent) {
-    return res.status(500).send({ message: "An error occurred on the server" });
+  const statusCode = err.statusCode || 500;
+
+  if (res.headersSent) {
+    return next(err);
   }
-  // If headers were already sent, delegate to Express default error handler
-  return next(err);
+
+  const message =
+    statusCode === 500 ? "An error has occurred on the server." : err.message;
+
+  return res.status(statusCode).send({ message });
 };
 
-module.exports = { errorHandler };
+module.exports = errorHandler;

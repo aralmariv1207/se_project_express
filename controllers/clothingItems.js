@@ -1,6 +1,7 @@
 const NotFoundError = require("../errors/not-found-error");
 const BadRequestError = require("../errors/bad-request-error");
 const ForbiddenError = require("../errors/forbidden-error");
+const ServerError = require("../errors/server-error");
 
 const ClothingItem = require("../models/clothingItem");
 
@@ -10,8 +11,8 @@ const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((err) => {
-      console.error(err);
-      next(err);
+      console.error("Error fetching items:", err);
+      return next(new ServerError("An error occurred on the server"));
     });
 };
 
@@ -28,7 +29,7 @@ const createItem = (req, res, next) => {
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Invalid data provided"));
       }
-      return next(err);
+      return next(new ServerError("An error occurred on the server"));
     });
 };
 
@@ -47,7 +48,7 @@ const getItem = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
       }
-      return next(err);
+      return next(new ServerError("An error occurred on the server"));
     });
 };
 
@@ -60,12 +61,10 @@ const deleteItem = async (req, res, next) => {
     const item = await ClothingItem.findById(itemId);
 
     if (!item) {
-      console.log(`item with ID ${itemId} not found.`);
       return next(new NotFoundError("Item not found."));
     }
 
     if (!item.owner.equals(req.user._id)) {
-      console.log(`User ${req.user._id} is not the owner of item ${itemId}.`);
       return next(
         new ForbiddenError("You do not have permission to delete this item.")
       );
@@ -73,17 +72,12 @@ const deleteItem = async (req, res, next) => {
 
     await item.deleteOne();
 
-    console.log(`Item ${itemId} successfully deleted by user ${req.user._id}.`);
     return res.status(200).send({ message: "Item deleted successfully" });
   } catch (err) {
     if (err.name === "CastError") {
-      console.error(
-        `CastError for item ID ${req.params.itemId}: ${err.message}`
-      );
       return next(new BadRequestError("Invalid item ID"));
     }
-    console.error(`Error deleting item ${req.params.itemId}: ${err.message}`);
-    return next(err);
+    return next(new ServerError("An error occurred on the server"));
   }
 };
 
@@ -95,17 +89,13 @@ const addLike = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
-    .then((item) => {
-      if (!item) {
-        return next(new NotFoundError("Item not found"));
-      }
-      return res.send(item);
-    })
+    .orFail()
+    .then((item) => res.send(item))
     .catch((err) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
       }
-      return next(err);
+      return next(new ServerError("An error occurred on the server"));
     });
 };
 
@@ -117,17 +107,16 @@ const removeLike = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true }
   )
-    .then((item) => {
-      if (!item) {
+    .orFail()
+    .then((item) => res.send(item))
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("Item not found"));
       }
-      return res.send(item);
-    })
-    .catch((err) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
       }
-      return next(err);
+      return next(new ServerError("An error occurred on the server"));
     });
 };
 
