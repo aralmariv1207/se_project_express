@@ -28,7 +28,17 @@ const validateItem = celebrate({
   }),
 });
 
+const validateUserProfile = celebrate({
+  body: Joi.object()
+    .keys({
+      name: Joi.string().min(2).max(30),
+      avatar: Joi.string().uri(),
+    })
+    .or("name", "avatar"),
+});
+
 exports.validateSignup = validateSignup;
 exports.validateLogin = validateLogin;
 exports.validateItem = validateItem;
-exports.celebrate = celebrate; // Export celebrate for use in other files if needed
+exports.validateUserProfile = validateUserProfile;
+exports.celebrate = celebrate; // Export celebrate for use in routes
