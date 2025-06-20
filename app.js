@@ -16,7 +16,7 @@ const usersRouter = require("./routes/users");
 // Importing middlewares and controllers
 const auth = require("./middlewares/auth");
 const { createUser, login } = require("./controllers/users");
-const { NOT_FOUND } = require("./utils/errors");
+const NotFoundError = require("./errors/not-found-error");
 
 const app = express();
 
@@ -52,9 +52,9 @@ app.use(
 );
 
 // 404 middleware for unhandled routes
-app.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
-});
+app.use((req, res, next) =>
+  next(new NotFoundError("Requested resource not found"))
+);
 
 app.use(errorLogger);
 app.use(errors());
