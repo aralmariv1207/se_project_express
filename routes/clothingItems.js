@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
-const { validateItem } = require("../middlewares/validations");
+const { validateItem, validateItemId } = require("../middlewares/validations");
+const auth = require("../middlewares/auth");
 
 const {
   getItems,
@@ -15,14 +16,18 @@ const {
 router.get("/", getItems);
 
 // GET single clothing item by ID
-router.get("/:itemId", getItem);
-
-// DELETE a clothing item by ID
-router.delete("/:itemId", deleteItem);
+router.get("/:itemId", validateItemId, getItem);
 
 // POST - Create a new clothing item
-router.post("/", validateItem, createItem);
-router.put("/:itemId/likes", addLike);
-router.delete("/:itemId/likes", removeLike);
+router.post("/", auth, validateItem, createItem);
+
+// DELETE a clothing item by ID
+router.delete("/:itemId", auth, validateItemId, deleteItem);
+
+// PUT - Add a like to a clothing item
+router.put("/:itemId/likes", auth, validateItemId, addLike);
+
+// DELETE - Remove a like from a clothing item
+router.delete("/:itemId/likes", auth, validateItemId, removeLike);
 
 module.exports = router;
