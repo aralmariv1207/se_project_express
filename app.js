@@ -7,7 +7,7 @@ const { errors } = require("celebrate");
 const { validateSignup, validateLogin } = require("./middlewares/validations");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
-const { errorHandler } = require("./middlewares/errorHandler");
+const errorHandler = require("./middlewares/errorHandler");
 
 // Importing routers
 const itemsRouter = require("./routes/clothingItems");

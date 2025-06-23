@@ -10,10 +10,7 @@ const ClothingItem = require("../models/clothingItem");
 const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) => {
-      console.error("Error fetching items:", err);
-      return next(new ServerError("An error occurred on the server"));
-    });
+    .catch(() => next(new ServerError("An error occurred on the server")));
 };
 
 // POST /items
@@ -25,7 +22,6 @@ const createItem = (req, res, next) => {
   ClothingItem.create({ name, imageUrl, weather, owner })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Invalid data provided"));
       }
@@ -41,7 +37,6 @@ const getItem = (req, res, next) => {
     .orFail()
     .then((item) => res.status(200).send(item))
     .catch((err) => {
-      console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("Item not found"));
       }
@@ -94,6 +89,9 @@ const addLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return next(new NotFoundError("Item not found"));
       }
       return next(new ServerError("An error occurred on the server"));
     });
